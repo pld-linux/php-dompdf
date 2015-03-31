@@ -1,0 +1,26 @@
+From: =?utf-8?q?David_Pr=C3=A9vot?= <taffit@debian.org>
+Date: Wed, 16 Oct 2013 15:47:22 -0400
+Subject: Adapt main path
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+
+Don’t try to guess the actual path from the configuration file moved in
+/etc for the Debian package.
+---
+ dompdf_config.inc.php | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/dompdf_config.inc.php b/dompdf_config.inc.php
+index 51fbcb5..a6593ee 100644
+--- a/dompdf_config.inc.php
++++ b/dompdf_config.inc.php
+@@ -16,7 +16,7 @@ PHP_VERSION >= 5.0 or die("DOMPDF requires PHP 5.0+");
+ /**
+  * The root of your DOMPDF installation
+  */
+-define("DOMPDF_DIR", str_replace(DIRECTORY_SEPARATOR, '/', realpath(dirname(__FILE__))));
++define("DOMPDF_DIR", "/usr/share/php/dompdf");
+ 
+ /**
+  * The location of the DOMPDF include directory

@@ -12,6 +12,7 @@ License:	LGPL v2.1
 Group:		Development/Languages/PHP
 Source0:	https://github.com/dompdf/dompdf/releases/download/v%{version}/dompdf-%{version}.zip
 # Source0-md5:	7ac81b1a96d4311cd47d756b48d01de4
+Patch0:		config.patch
 URL:		http://dompdf.github.io/
 BuildRequires:	/usr/bin/php
 BuildRequires:	rpm-php-pearprov >= 4.4.2-11
@@ -39,6 +40,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_noautoreq	%{?_noautophp} %{?_noautopear}
 
 %define		_appdir			%{php_data_dir}/%{pkgname}
+%define		_sysconfdir		/etc/%{pkgname}
 
 %description
 dompdf is an HTML to PDF converter. At its heart, dompdf is (mostly)
@@ -50,11 +52,14 @@ HTML elements. It also supports most presentational HTML attributes.
 %prep
 %setup -qc
 mv %{pkgname}/* .
+%patch0 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_appdir}
+install -d $RPM_BUILD_ROOT{%{_appdir},%{_sysconfdir}}
 cp -a dompdf.php load_font.php include lib $RPM_BUILD_ROOT%{_appdir}
+cp -p dompdf_config.inc.php $RPM_BUILD_ROOT%{_sysconfdir}
+ln -s %{_sysconfdir}/dompdf_config.inc.php $RPM_BUILD_ROOT%{_appdir}
 
 install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 cp -a www/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
@@ -65,5 +70,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README.md CONTRIBUTING.md
+%dir %attr(750,root,http) %{_sysconfdir}
+%attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/dompdf_config.inc.php
 %{_appdir}
 %{_examplesdir}/%{name}-%{version}
