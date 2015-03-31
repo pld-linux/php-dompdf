@@ -1,5 +1,8 @@
+# TODO
+# - external php-font-lib
+# - external php-tcpdf
 %define		pkgname	dompdf
-%define		php_min_version 5.2.1
+%define		php_min_version 5.2.7
 %include	/usr/lib/rpm/macros.php
 Summary:	HTML to PDF converter
 Name:		php-%{pkgname}
@@ -15,11 +18,26 @@ BuildRequires:	rpm-php-pearprov >= 4.4.2-11
 BuildRequires:	rpmbuild(macros) >= 1.461
 BuildRequires:	unzip
 Requires:	php(core) >= %{php_min_version}
+Requires:	php(date)
+Requires:	php(dom)
+Requires:	php(gd)
+Requires:	php(iconv)
+Requires:	php(json)
 Requires:	php(mbstring)
+Requires:	php(pcre)
+Requires:	php(spl)
+Requires:	php(xml)
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_noautoreq_pear  dompdf_config.inc.php
+%define		_noautoreq_pear  dompdf_config.inc.php .*Font_Binary_Stream.php
+
+# exclude optional php dependencies
+%define		_noautophp	php-curl php-pgsql php.*pgsql
+
+# put it together for rpmbuild
+%define		_noautoreq	%{?_noautophp} %{?_noautopear}
+
 %define		_appdir			%{php_data_dir}/%{pkgname}
 
 %description
@@ -36,7 +54,7 @@ mv %{pkgname}/* .
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_appdir}
-cp -p *.php $RPM_BUILD_ROOT%{_appdir}
+cp -a dompdf.php load_font.php include lib $RPM_BUILD_ROOT%{_appdir}
 
 install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 cp -a www/* $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
