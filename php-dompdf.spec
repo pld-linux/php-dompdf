@@ -6,12 +6,12 @@
 %include	/usr/lib/rpm/macros.php
 Summary:	HTML to PDF converter
 Name:		php-%{pkgname}
-Version:	0.6.1
+Version:	0.6.2
 Release:	1
 License:	LGPL v2.1
 Group:		Development/Languages/PHP
 Source0:	https://github.com/dompdf/dompdf/releases/download/v%{version}/dompdf-%{version}.zip
-# Source0-md5:	7ac81b1a96d4311cd47d756b48d01de4
+# Source0-md5:	06c265913be9c0935c4f607617a7af0f
 Patch0:		config.patch
 URL:		http://dompdf.github.io/
 BuildRequires:	/usr/bin/php
