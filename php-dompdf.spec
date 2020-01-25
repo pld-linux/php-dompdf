@@ -3,7 +3,6 @@
 # - external php-tcpdf
 %define		pkgname	dompdf
 %define		php_min_version 5.2.7
-%include	/usr/lib/rpm/macros.php
 Summary:	HTML to PDF converter
 Name:		php-%{pkgname}
 Version:	0.6.2
