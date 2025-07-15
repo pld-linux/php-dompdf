@@ -51,7 +51,7 @@ HTML elements. It also supports most presentational HTML attributes.
 %prep
 %setup -qc
 mv %{pkgname}/* .
-%patch0 -p1
+%patch -P0 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
